@@ -1,33 +1,34 @@
-# IOT--light-fall-detection-robot
+# Light-Sensitive System with LDR
 
-Component List
-Here’s a list of components commonly used in LDR-based projects:
+## Description
+This project uses an LDR (Light Dependent Resistor) to detect ambient light levels and control an LED. Optionally, it includes a servo motor for solar tracking.
 
-Arduino Uno (or any compatible microcontroller)
+## Components Used
+- Arduino Uno
+- LDR (Light Dependent Resistor)
+- 10kΩ Resistor
+- LED
+- Servo Motor (optional)
+- Breadboard and Jumper Wires
 
-LDR (Light Dependent Resistor) - For light sensing
+## Setup Instructions
+1. Connect the LDR to A0 and GND (via a 10kΩ resistor).
+2. Connect the LED to pin 9 and GND.
+3. (Optional) Connect the servo motor to pin 11, 5V, and GND.
+4. Upload the code to the Arduino.
 
-Resistors (10kΩ) - For LDR voltage divider
+## Code Explanation
+- The LDR measures light intensity.
+- The LED turns on when the light level is below a threshold.
+- (Optional) The servo motor adjusts its position based on light intensity.
 
-LEDs - For indication or output
+## Challenges
+- Calibrating the LDR threshold for accurate detection.
+- Ensuring smooth servo motor movement.
 
-Servo Motor (optional) - For solar tracking or directional control
+## Future Improvements
+- Add an LCD display for real-time light intensity readings.
+- Use multiple LDRs for better solar tracking.
 
-Breadboard and Jumper Wires - For connections
-
-Power Supply (USB or battery)
-
-Pin Diagram
-Here’s how you can connect the components to the Arduino:
-
-Component	Arduino Pin
-LDR	
-- One leg	A0
-- Other leg	GND (via 10kΩ resistor)
-LED	
-- Positive leg	9
-- Negative leg	GND
-Servo Motor (optional)	
-- Signal	11
-- VCC	5V
-- GND	GND
+## License
+This project is open-source under the MIT License.
