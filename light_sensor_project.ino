@@ -1,56 +1,76 @@
-#include <Servo.h>
+#include<AFMotor.h> 
+#define L1 A0 
+#define M1 A1
+#define R1 A2
 
-// Define pins
-const int ldrPin = A0; // LDR connected to A0
-const int ledPin = 9;  // LED connected to pin 9
-const int servoPin = 11; // Servo connected to pin 11 (optional)
+AF_DCMotor motor1(1);
+AF_DCMotor motor2(2);
+AF_DCMotor motor3(3);
+AF_DCMotor motor4(4);
 
-// Variables
-int ldrValue = 0;
-int threshold = 500; // Adjust this value based on your LDR's sensitivity
-Servo myServo;
 
 void setup() {
-  // Initialize pins
-  pinMode(ldrPin, INPUT);
-  pinMode(ledPin, OUTPUT);
-
-  // Attach servo (optional)
-  myServo.attach(servoPin);
-
-  // Start serial communication
-  Serial.begin(9600);
+  // put your setup code here, to run once:
+Serial.begin(9600);
+pinMode(L1, INPUT);
+pinMode(M1, INPUT);
+pinMode(R1, INPUT);
 }
 
 void loop() {
-  // Read LDR value
-  ldrValue = analogRead(ldrPin);
-  Serial.print("LDR Value: ");
-  Serial.println(ldrValue);
+  // put your main code here, to run repeatedly:
+int LSensor = digitalRead(L1);
+int MSensor = digitalRead(M1);
+int RSensor = digitalRead(R1);
 
-  // Control LED based on light intensity
-  if (ldrValue < threshold) {
-    digitalWrite(ledPin, HIGH); // Turn on LED in low light
-  } else {
-    digitalWrite(ledPin, LOW); // Turn off LED in bright light
-  }
+Serial.print("LSensor");
+Serial.println(LSensor);
+Serial.print("MSensor");
+Serial.println(MSensor);
+Serial.print("RSensor");
+Serial.println(RSensor);
 
-  // Optional: Servo control for solar tracking
-  trackLight(); // Call the tracking function
-  delay(100); // Small delay for stability
+if((LSensor == 0)&&(MSensor == 0)&&(RSensor ==0)) { 
+  //MOVE FORWARD
+  motor1.setSpeed(120);
+  motor1.run(FORWARD);
+  motor2.setSpeed(120);
+  motor2.run(FORWARD);
+  motor3.setSpeed(120);
+  motor3.run(FORWARD);
+  motor4.setSpeed(120);
+  motor4.run(FORWARD);
+  
+} else if((LSensor == 0)&&(MSensor == 0)&&(RSensor ==1)) {
+  //TURN LEFT
+  motor1.setSpeed(150);
+  motor1.run(BACKWARD);
+  motor2.setSpeed(150);
+  motor2.run(BACKWARD);
+  motor3.setSpeed(150);
+  motor3.run(FORWARD);
+  motor4.setSpeed(150);
+  motor4.run(FORWARD);
+  
+}else if((LSensor == 1)&&(MSensor == 0)&&(RSensor ==0)) {
+  //TURN RIGHT
+  motor1.setSpeed(150);
+  motor1.run(FORWARD);
+  motor2.setSpeed(150);
+  motor2.run(FORWARD);
+  motor3.setSpeed(150);
+  motor3.run(BACKWARD);
+  motor4.setSpeed(150);
+  motor4.run(BACKWARD);
+}else if((LSensor == 1)&&(MSensor == 1)&&(RSensor ==1)) {
+  //STOP
+  motor1.setSpeed(0);
+  motor1.run(RELEASE);
+  motor2.setSpeed(0);
+  motor2.run(RELEASE);
+  motor3.setSpeed(0);
+  motor3.run(RELEASE);
+  motor4.setSpeed(0);
+  motor4.run(RELEASE);
 }
-
-void trackLight() {
-  // Read LDR values from two sensors (for solar tracking)
-  int ldrLeft = analogRead(A1); // Left LDR
-  int ldrRight = analogRead(A2); // Right LDR
-
-  // Determine direction based on light intensity
-  if (ldrLeft > ldrRight) {
-    myServo.write(0); // Move servo to the left
-  } else if (ldrRight > ldrLeft) {
-    myServo.write(180); // Move servo to the right
-  } else {
-    myServo.write(90); // Center position
-  }
 }
